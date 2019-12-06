@@ -461,7 +461,7 @@ class Estimates extends AdminController
         redirect(admin_url('estimates/list_estimates/' . $id));
     }
 
-    /* Generates estimate PDF and senting to email  */
+    /* Generates estimate PDF and sending to email  */
     public function pdf($id)
     {
         $canView = user_can_view_estimate($id);

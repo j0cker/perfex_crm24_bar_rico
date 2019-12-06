@@ -45,6 +45,7 @@ $client_details .= '<br /><b>' . $dimensions['rm'] . '</b>';
 $client_details .= '<br /><b>' . $dimensions['lm'] . '</b>';
 */
 
+//incluye custom fields
 $client_details .= '<div style="color:#424242;">';
     $client_details .= 'Para: ' . format_proposal_info($proposal, 'pdf');
 $client_details .= '</div>';
@@ -71,7 +72,8 @@ $items = get_items_table_data($proposal, 'proposal', 'pdf')
 
 $items_html = "";
 $items_html .= '<table style="width: 250px;" cellpadding="3">';
-$items_html .= '<tr><td style="width: 100px;">Item</td><td style="width: 75px;">Qty</td><td style="width: 75px;">Precio</td></tr>';
+$items_html .= '<tr><td style="width: 100px;">Art.</td><td style="width: 75px;">Cant.</td><td style="width: 75px;">Precio</td></tr>';
+
 foreach ($proposal->items as $item) {
 
     $items_html .= '<tr><td style="width: 100px; font-size: 12px;">' .substr($item["description"],0,10). '</td><td style="width: 75px;">'.$item["qty"].'</td><td style="width: 75px;">'.$item["rate"].'</td></tr>';

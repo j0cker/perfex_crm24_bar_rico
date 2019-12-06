@@ -30,7 +30,7 @@ trait PDF_Signature
                 $blankSignatureLine .= '<br /><br /><img src="' . site_url('uploads/company/' . $signatureImage) . '" />';
             }
 
-            $this->MultiCell(($dimensions['wk'] / 2) - $dimensions['lm'], 0, _l('authorized_signature_text') . ' ' . $blankSignatureLine, 0, 'J', 0, 0, '', '', true, 0, true, true, 0);
+            //$this->MultiCell(($dimensions['wk'] / 2) - $dimensions['lm'], 0, _l('authorized_signature_text') . ' ' . $blankSignatureLine, 0, 'J', 0, 0, '', '', true, 0, true, true, 0);
 
             $leftColumnExists = true;
         }

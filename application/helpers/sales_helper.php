@@ -438,6 +438,91 @@ if (!function_exists('format_customer_info')) {
     }
 }
 
+if (!function_exists('format_estimate_info')) {
+    /**
+     * Format proposal info format
+     * @param  object $proposal proposal from database
+     * @param  string $for      where this info will be used? Admin area, HTML preview?
+     * @return string
+     */
+    function format_estimate_info($proposal, $for = '')
+    {
+
+
+        /*
+        PDF join custom fields
+        */
+
+        $format = get_option('proposal_info_format');
+
+        $countryCode = '';
+        $countryName = '';
+        $country     = get_country($proposal->country);
+
+        if ($country) {
+            $countryCode = $country->iso2;
+            $countryName = $country->short_name;
+        }
+
+        $proposalTo = '<b>' . $proposal->proposal_to . '</b>';
+        $phone      = $proposal->phone;
+        $email      = $proposal->email;
+
+        if ($for == 'admin') {
+            $hrefAttrs = '';
+            if ($proposal->rel_type == 'lead') {
+                $hrefAttrs = ' href="#" onclick="init_lead(' . $proposal->rel_id . '); return false;" data-toggle="tooltip" data-title="' . _l('lead') . '"';
+            } else {
+                $hrefAttrs = ' href="' . admin_url('clients/client/' . $proposal->rel_id) . '" data-toggle="tooltip" data-title="' . _l('client') . '"';
+            }
+            $proposalTo = '<a' . $hrefAttrs . '>' . $proposalTo . '</a>';
+        }
+
+        if ($for == 'html' || $for == 'admin') {
+            $phone = '<a href="tel:' . $proposal->phone . '">' . $proposal->phone . '</a>';
+            $email = '<a href="mailto:' . $proposal->email . '">' . $proposal->email . '</a>';
+        }
+
+        
+        //log_activity('_info_format_replace Format: ' . $format);
+
+        $format = _info_format_replace('proposal_to', $proposalTo, $format);
+        $format = _info_format_replace('address', $proposal->address, $format);
+        $format = _info_format_replace('city', $proposal->city, $format);
+        $format = _info_format_replace('state', $proposal->state, $format);
+
+        $format = _info_format_replace('country_code', $countryCode, $format);
+        $format = _info_format_replace('country_name', $countryName, $format);
+
+        $format = _info_format_replace('zip_code', $proposal->zip, $format);
+        $format = _info_format_replace('phone', $phone, $format);
+        $format = _info_format_replace('email', '', $format);
+
+        $whereCF = [];
+        if (is_custom_fields_for_customers_portal()) {
+            $whereCF['show_on_client_portal'] = 1;
+        }
+        $customFieldsProposals = get_custom_fields('estimate');
+
+        //log_activity('_info_format_replace Format: ' . $format);
+
+        $return = "";
+
+        foreach ($customFieldsProposals as $field) {
+
+
+            //log_activity('_info_format_replace PDF: ' . $field['id']);
+
+            $value  = get_custom_field_value($proposal->id, $field['id'], 'estimate');
+
+            $return .= "".$field['name'].": ".$value."<br />";
+        }
+
+        
+        return $return;
+    }
+}
+
 if (!function_exists('format_proposal_info')) {
     /**
      * Format proposal info format
