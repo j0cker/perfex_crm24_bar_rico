@@ -8,12 +8,12 @@
      <a href="<?php echo admin_url('estimates/estimate'); ?>" class="btn btn-info pull-left new new-estimate-btn"><?php echo _l('create_new_estimate'); ?></a>
    <?php } ?>
    <?php if(has_permission('estimates','','editar')){ ?>
-    <a style="margin-left: 10px;" href="http://rico.boogapp.mx/admin/proposals/proposal" class="btn btn-success pull-left display-block">
+    <a style="margin-left: 10px;" href="<?php echo admin_url('estimates/import'); ?>" class="btn btn-success pull-left display-block">
         Importar               
     </a>
    <?php } ?>
    <?php if(has_permission('estimates','','eliminar')){ ?>
-    <a style="margin-left: 10px;" href="http://rico.boogapp.mx/admin/otrosIngresos/delete/all" class="btn btn-danger pull-left display-block">
+    <a style="margin-left: 10px;" href="<?php echo admin_url('otrosIngresos/delete/all'); ?>" class="btn btn-danger pull-left display-block">
         Eliminar Todo               
     </a>
    <?php } ?>

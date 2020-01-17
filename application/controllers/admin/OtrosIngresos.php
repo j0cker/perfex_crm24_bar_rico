@@ -31,12 +31,12 @@ class OtrosIngresos extends AdminController
         if($deleteCustom == 1 && $deleteEstimates == 1 && $deleteItemable == 1){
 
             echo "<meta http-equiv='refresh'
-            content='5; url=http://rico.boogapp.mx/admin/otrosIngresos'>Se borraron todos los registros con respecto a Otros Ingresos";
+            content='5; url=".admin_url('estimates')."'>Se borraron todos los registros con respecto a Otros Ingresos";
 
         } else {
 
             echo "<meta http-equiv='refresh'
-            content='5; url=http://rico.boogapp.mx/admin/otrosIngresos'>No Se Pudieron borrar todos los registros con respecto a Otros Ingresos";
+            content='5; url=".admin_url('estimates')."'>No Se Pudieron borrar todos los registros con respecto a Otros Ingresos";
         }
 
         //fieldto proposal
@@ -80,5 +80,7 @@ class OtrosIngresos extends AdminController
         */
 
     }
+
+
 
 }

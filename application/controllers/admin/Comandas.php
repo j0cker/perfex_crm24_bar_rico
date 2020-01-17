@@ -31,12 +31,12 @@ class Comandas extends AdminController
         if($deleteCustom == 1 && $deleteProposals == 1 && $deleteItemable == 1){
 
             echo "<meta http-equiv='refresh'
-            content='5; url=http://rico.boogapp.mx/admin/comandas'>Se borraron todos los registros con respecto a Comandas";
+            content='5; url=".admin_url('proposals')."'>Se borraron todos los registros con respecto a Comandas";
 
         } else {
 
             echo "<meta http-equiv='refresh'
-            content='5; url=http://rico.boogapp.mx/admin/comandas'>No Se Pudieron borrar todos los registros con respecto a Comandas";
+            content='5; url=".admin_url('proposals')."'>No Se Pudieron borrar todos los registros con respecto a Comandas";
         }
 
         //fieldto proposal

@@ -461,6 +461,41 @@ class Estimates extends AdminController
         redirect(admin_url('estimates/list_estimates/' . $id));
     }
 
+    public function import(){
+
+        if (!has_permission('items', '', 'create')) {
+            access_denied('Items Import');
+        }
+
+        //introducción de carga
+        //redirección si falla una carga
+        $this->load->library('import/import_items', [], 'import');
+
+        $this->import->setDatabaseFields($this->db->list_fields(db_prefix().'items'))
+                     ->setCustomFields(get_custom_fields('items'));
+
+        if ($this->input->post('download_sample') === 'true') {
+            $this->import->downloadSample();
+        }
+
+        if ($this->input->post()
+            && isset($_FILES['file_csv']['name']) && $_FILES['file_csv']['name'] != '') {
+            $this->import->setSimulation($this->input->post('simulate'))
+                          ->setTemporaryFileLocation($_FILES['file_csv']['tmp_name'])
+                          ->setFilename($_FILES['file_csv']['name'])
+                          ->perform();
+
+            $data['total_rows_post'] = $this->import->totalRows();
+
+            if (!$this->import->isSimulation()) {
+                set_alert('success', _l('import_total_imported', $this->import->totalImported()));
+            }
+        }
+
+        $data['title'] = _l('import');
+        $this->load->view('admin/invoice_items/import', $data);
+    }
+
     /* Generates estimate PDF and sending to email  */
     public function pdf($id)
     {

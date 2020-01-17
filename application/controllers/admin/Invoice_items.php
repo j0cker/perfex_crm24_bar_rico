@@ -90,6 +90,8 @@ class Invoice_items extends AdminController
             access_denied('Items Import');
         }
 
+        //introducción de carga
+        //redirección si falla una carga
         $this->load->library('import/import_items', [], 'import');
 
         $this->import->setDatabaseFields($this->db->list_fields(db_prefix().'items'))

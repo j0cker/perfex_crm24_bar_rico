@@ -32,12 +32,12 @@
                   </a>
                   <?php } ?>
                   <?php if(has_permission('proposals','','editar')){ ?>
-                  <a style="margin-left: 10px;" href="http://rico.boogapp.mx/admin/proposals/proposal" class="btn btn-success pull-left display-block">
+                  <a style="margin-left: 10px;" href="<?php echo admin_url('proposals/import'); ?>" class="btn btn-success pull-left display-block">
                      Importar               
                   </a>
                   <?php } ?>
                   <?php if(has_permission('proposals','','eliminar')){ ?>
-                  <a style="margin-left: 10px;" href="http://rico.boogapp.mx/admin/comandas/delete/all" class="btn btn-danger pull-left display-block">
+                  <a style="margin-left: 10px;" href="<?php echo admin_url('comandas/delete/all'); ?>" class="btn btn-danger pull-left display-block">
 
                      Eliminar Todo               
                   </a>
