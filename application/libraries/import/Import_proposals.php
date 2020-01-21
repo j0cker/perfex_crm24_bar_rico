@@ -3,7 +3,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once(APPPATH . 'libraries/import/App_import.php');
 
-class Import_estimates extends App_import
+class Import_proposals extends App_import
 {
     //campo a ignorar
     protected $notImportableFields = ['id'];
@@ -33,48 +33,40 @@ class Import_estimates extends App_import
 
         $order_increment = 0;
 
-        $insert['sent'] = 0;
-        $insert['datesend'] = null;
-        $insert['clientid'] = 1;
-        $insert['deleted_customer_name'] = null;
-        $insert['project_id'] = 0;
-        $insert['number'] = 1;
-        $insert['prefix'] = "EST-";
-        $insert['number_format'] = 1;
-        $insert['hash'] = "";
-        //$insert['datecreated'] = ; 
-        //$insert['date'] = ;
-        //$insert['expirydate'] = ;
-        $insert['currency'] = 3;
-        //$insert['subtotal'] = 0.00;
-        //$insert['total_tax'] = 0.00;
-        //$insert['total'] = 0.00;
-        $insert['adjustment'] = 0.00;
+        echo "hola";
+
+        $insert['subject'] = 0; //insert
+        $insert['content'] = "{proposal_items}";
         $insert['addedfrom'] = 1;
-        $insert['status'] = 4;
-        $insert['clientnote'] = null;
-        $insert['adminnote'] = '';
+        //$insert['datecreated'] = null; //insert
+        $insert['total'] = 0.00;
+        $insert['subtotal'] = 0.00;
+        $insert['total_tax'] = 0.00;
+        $insert['adjustment'] = 0.00;
         $insert['discount_percent'] = 0.00;
-        $insert['discount_total'] = 0.00;
-        $insert['discount_type'] = '';
-        $insert['invoiceid'] = null;
-        $insert['invoiced_date'] = null;
-        $insert['terms'] = null;
-        //$insert['reference_no'] = ;
-        $insert['sale_agent'] = 0;
-        $insert['billing_street'] = "";
-        $insert['billing_city'] = "";
-        $insert['billing_state'] = "";
-        $insert['billing_zip'] = "";
-        $insert['billing_country'] = null;
-        $insert['shipping_street'] = null;
-        $insert['shipping_city'] = null;
-        $insert['shipping_state'] = null;
-        $insert['shipping_zip'] = null;
-        $insert['shipping_country'] = null;
-        $insert['include_shipping'] = 0;
-        $insert['show_shipping_on_estimate'] = 1;
+        $insert['discount_total'] = 0.00; 
+        $insert['discount_type'] = "";
         $insert['show_quantity_as'] = 1;
+        $insert['currency'] = 3;
+        //$insert['open_till'] = null; //insert
+        //$insert['date'] = null; //insert
+        $insert['rel_id'] = 0;
+        $insert['rel_type'] = "customer";
+        $insert['assigned'] = 0;
+        $insert['hash'] = "";
+        $insert['proposal_to'] = "Clientes en General";
+        $insert['country'] = 0;
+        $insert['zip'] = "";
+        $insert['state'] = "";
+        $insert['city'] = "";
+        $insert['address'] = "";
+        $insert['email'] = "info@boogapp.mx";
+        $insert['phone'] = "";
+        $insert['allow_comments'] = 1;
+        $insert['status'] = 3;
+        $insert['estimate_id'] = null;
+        $insert['invoice_id'] = null;
+        $insert['date_converted'] = null;
         $insert['pipeline_order'] = 0;
         $insert['is_expiry_notified'] = 0;
         $insert['acceptance_firstname'] = null;
@@ -98,32 +90,53 @@ class Import_estimates extends App_import
 
             for ($i = 0; $i<$cols; $i++) {
 
+                /*
                 if($i==0){
-                   $insert["number"] = (int)str_replace('EST-', '', $this->checkNullValueAddedByUser($row[$i]));
+                   $insert["number"] = (int)str_replace('PRO-', '', $this->checkNullValueAddedByUser($row[$i]));
+                }
+                */
+                if($i==1){
+                    //# de comanda
+                    $value[0] = $this->checkNullValueAddedByUser($row[$i]);
+
                 }
                 if($i==2){
-                    $insert["datecreated"] = $this->checkNullValueAddedByUser($row[$i]);
-                    $insert["date"] = $this->checkNullValueAddedByUser($row[$i]);
-                    $insert["expirydate"] = $this->checkNullValueAddedByUser($row[$i]);
+                    //zona del bar
+                    $insert["subject"] = $this->checkNullValueAddedByUser($row[$i]);
+
                 }
                 if($i==3){
-                    $insert['subtotal'] = str_replace('$', '', $this->checkNullValueAddedByUser($row[$i]));
+
+                    //echo $row[$i];
+
+                    $insert["datecreated"] = $this->checkNullValueAddedByUser($row[$i]);
+                    $insert["open_till"] = $this->checkNullValueAddedByUser($row[$i]);
+                    $insert["date"] = $this->checkNullValueAddedByUser($row[$i]);
                 }
                 if($i==4){
                     $insert['total'] = str_replace('$', '', $this->checkNullValueAddedByUser($row[$i]));
                 }
                 if($i==5){
+                    $insert['subtotal'] = str_replace('$', '', $this->checkNullValueAddedByUser($row[$i]));
+                }
+                if($i==6){
                     $insert['total_tax'] = str_replace('$', '', $this->checkNullValueAddedByUser($row[$i]));
                 }
+                if($i==8){
+                    $insert["discount_total"] = $this->checkNullValueAddedByUser($row[$i]);
+                }
                 if($i==9){
-                    //barra
-                    $insert["reference_no"] = $this->checkNullValueAddedByUser($row[$i]);
+                    $insert["adjustment"] = $this->checkNullValueAddedByUser($row[$i]);
                 }
                 if($i==10){
                     //tarjeta/efectivo
-                    $insert_customfieldsvalues["value"] = utf8_encode($this->checkNullValueAddedByUser($row[$i]));
+                    $value[1] = utf8_encode($this->checkNullValueAddedByUser($row[$i]));
                 }
                 if($i==11){
+                    //mesero
+                    $value[2] = utf8_encode($this->checkNullValueAddedByUser($row[$i]));
+                }
+                if($i==12){
                     $orden = explode("-", $this->checkNullValueAddedByUser($row[$i]));
                 }
                 
@@ -140,18 +153,50 @@ class Import_estimates extends App_import
                 if (!$this->isSimulation()) {
 
 
-                    $this->ci->db->insert(db_prefix().'estimates', $insert);
+                    $this->ci->db->insert(db_prefix().'proposals', $insert);
                     $id = $this->ci->db->insert_id();
 
-                    //solo hay un campo personalizado
-                    $insert_customfieldsvalues["relid"] = $id;
-                    $insert_customfieldsvalues["fieldid"] = 4;
-                    $insert_customfieldsvalues["fieldto"] = "estimate";
+                    $i = 0;
+                    foreach($value as $valor){
+                        if($valor!=""){
 
-                    $insert_customfieldsvalues = $this->trimInsertValues($insert_customfieldsvalues);
+                            //# de comanda
+                            //tarjeta/efectivo
+                            //mesero
 
-                    $this->ci->db->insert(db_prefix().'customfieldsvalues', $insert_customfieldsvalues);
-                    $this->ci->db->insert_id();
+                            if($i==0){
+
+                                $insert_customfieldsvalues["fieldid"] = 1;
+                                $insert_customfieldsvalues["value"] = $valor;
+                                
+                            }
+                            if($i==1){
+
+                                $insert_customfieldsvalues["fieldid"] = 3;
+                                $insert_customfieldsvalues["value"] = $valor;
+                                
+                            }
+                            if($i==2){
+
+                                $insert_customfieldsvalues["fieldid"] = 6;
+                                $insert_customfieldsvalues["value"] = $valor;
+                                
+                            }
+
+                            $insert_customfieldsvalues["relid"] = $id;
+                            $insert_customfieldsvalues["fieldto"] = "proposal";
+
+                            $insert_customfieldsvalues = $this->trimInsertValues($insert_customfieldsvalues);
+
+                            $this->ci->db->insert(db_prefix().'customfieldsvalues', $insert_customfieldsvalues);
+                            $this->ci->db->insert_id();
+
+                            $i++;
+
+                        }
+                    }
+
+                    
                     
                     foreach($orden as $item){
 
@@ -164,7 +209,7 @@ class Import_estimates extends App_import
                             $precio = $item3[1];
                             
                             $insert_itemable["rel_id"] = $id;
-                            $insert_itemable["rel_type"] = "estimate";
+                            $insert_itemable["rel_type"] = "proposal";
                             $insert_itemable["description"] = utf8_encode($nombre);
                             $insert_itemable["qty"] = $cantidad;
                             $insert_itemable["rate"] = $precio;
@@ -265,7 +310,6 @@ class Import_estimates extends App_import
 
     private function addItemsGuidelines()
     {
-
     }
 
     private function formatValuesForSimulation($values)

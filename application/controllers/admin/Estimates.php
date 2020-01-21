@@ -463,19 +463,22 @@ class Estimates extends AdminController
 
     public function import(){
 
-        if (!has_permission('items', '', 'create')) {
-            access_denied('Items Import');
+        if (!has_permission('estimates', '', 'editar')) {
+            access_denied('Estimates Import');
         }
 
         //introducción de carga
         //redirección si falla una carga
-        $this->load->library('import/import_items', [], 'import');
+        $this->load->library('import/Import_estimates', [], 'import');
 
-        $this->import->setDatabaseFields($this->db->list_fields(db_prefix().'items'))
-                     ->setCustomFields(get_custom_fields('items'));
+        //table view in example
+        //table sample example
+        //$this->import->setDatabaseFields($this->db->list_fields(db_prefix().'estimates'))
+        //             ->setCustomFields(get_custom_fields('estimates'));
 
         if ($this->input->post('download_sample') === 'true') {
-            $this->import->downloadSample();
+            //backend download excel
+            $this->import->downloadSampleEstimates();
         }
 
         if ($this->input->post()
@@ -493,7 +496,7 @@ class Estimates extends AdminController
         }
 
         $data['title'] = _l('import');
-        $this->load->view('admin/invoice_items/import', $data);
+        $this->load->view('admin/estimates/import', $data);
     }
 
     /* Generates estimate PDF and sending to email  */

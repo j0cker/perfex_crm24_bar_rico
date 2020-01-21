@@ -55,6 +55,44 @@ class Proposals extends AdminController
         }
     }
 
+    public function import(){
+
+        if (!has_permission('proposals', '', 'editar')) {
+            access_denied('Proposals Import');
+        }
+
+        //introducción de carga
+        //redirección si falla una carga
+        $this->load->library('import/Import_proposals', [], 'import');
+
+        //table view in example
+        //table sample example
+        //$this->import->setDatabaseFields($this->db->list_fields(db_prefix().'estimates'))
+        //             ->setCustomFields(get_custom_fields('estimates'));
+
+        if ($this->input->post('download_sample') === 'true') {
+            //backend download excel
+            $this->import->downloadSampleProposals();
+        }
+
+        if ($this->input->post()
+            && isset($_FILES['file_csv']['name']) && $_FILES['file_csv']['name'] != '') {
+            $this->import->setSimulation($this->input->post('simulate'))
+                          ->setTemporaryFileLocation($_FILES['file_csv']['tmp_name'])
+                          ->setFilename($_FILES['file_csv']['name'])
+                          ->perform();
+
+            $data['total_rows_post'] = $this->import->totalRows();
+
+            if (!$this->import->isSimulation()) {
+                set_alert('success', _l('import_total_imported', $this->import->totalImported()));
+            }
+        }
+
+        $data['title'] = _l('import');
+        $this->load->view('admin/proposals/import', $data);
+    }
+
     public function table()
     {
 

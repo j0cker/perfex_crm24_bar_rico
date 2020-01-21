@@ -373,7 +373,7 @@ class Reports extends AdminController
                 '(select value from tblcustomfieldsvalues where tblcustomfieldsvalues.relid=tblproposals.id AND tblcustomfieldsvalues.fieldto="proposal" AND tblcustomfieldsvalues.fieldid=1 ) as tipo_de_pago',
                 '(select value from tblcustomfieldsvalues where tblcustomfieldsvalues.relid=tblproposals.id AND tblcustomfieldsvalues.fieldto="proposal" AND tblcustomfieldsvalues.fieldid=3 ) as mesero',
                 '(select value from tblcustomfieldsvalues where tblcustomfieldsvalues.relid=tblproposals.id AND tblcustomfieldsvalues.fieldto="proposal" AND tblcustomfieldsvalues.fieldid=6 ) as comanda',
-                "(select GROUP_CONCAT(description, ' Cantidad: ', qty, ' Precio: $ ', rate SEPARATOR ', <br /><br />') from tblitemable where tblitemable.rel_type='proposal' AND tblitemable.rel_id=tblproposals.id) as orden",
+                "(select GROUP_CONCAT(description, ' Cantidad: ', qty, ' Precio: $ ', rate  SEPARATOR'-<br /><br />') from tblitemable where tblitemable.rel_type='proposal' AND tblitemable.rel_id=tblproposals.id) as orden",
                 
             ]);
 
@@ -541,6 +541,7 @@ class Reports extends AdminController
                 'LEFT JOIN ' . db_prefix() . 'clients ON ' . db_prefix() . 'clients.userid = ' . db_prefix() . 'estimates.clientid',
             ];
 
+
             $result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, [
                 'userid',
                 'clientid',
@@ -548,7 +549,7 @@ class Reports extends AdminController
                 'discount_percent',
                 'deleted_customer_name',
                 '(select value from tblcustomfieldsvalues where tblcustomfieldsvalues.relid=tblestimates.id AND tblcustomfieldsvalues.fieldto="estimate" AND tblcustomfieldsvalues.fieldid=4 ) as tipo_de_pago',
-                "(select GROUP_CONCAT(description, ' Cantidad: ', qty, ' Precio: $ ', rate SEPARATOR ', <br /><br />') from tblitemable where tblitemable.rel_type='estimate' AND tblitemable.rel_id=tblestimates.id) as orden",
+                "(select GROUP_CONCAT(description, ' Cantidad: ', qty, ' Precio: $ ', rate  SEPARATOR'-<br /><br />') from tblitemable where tblitemable.rel_type='estimate' AND tblitemable.rel_id=tblestimates.id) as orden",
                 
             ]);
 
@@ -568,6 +569,7 @@ class Reports extends AdminController
             }
 
             foreach ($rResult as $aRow) {
+
                 $row = [];
 
                 $row[] = '<a href="' . admin_url('estimates/list_estimates/' . $aRow['id']) . '" target="_blank">' . format_estimate_number($aRow['id']) . '</a>';
@@ -578,7 +580,7 @@ class Reports extends AdminController
                     $row[] = $aRow['deleted_customer_name'];
                 }
 
-                $row[] = _d($aRow['datecreated']);
+                $row[] = _d($aRow['datecreated']); 
 
                 $row[] = app_format_money($aRow['subtotal'], $currency->name);
                 $footer_data['subtotal'] += $aRow['subtotal'];
@@ -612,10 +614,12 @@ class Reports extends AdminController
 
                 $output['aaData'][] = $row;
             }
+            
             foreach ($footer_data as $key => $total) {
                 $footer_data[$key] = app_format_money($total, $currency->name);
             }
             $output['sums'] = $footer_data;
+            
             echo json_encode($output);
             die();
         }

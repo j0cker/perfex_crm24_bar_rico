@@ -401,6 +401,52 @@ abstract class App_import
      * Download sample .csv file
      * @return mixed
      */
+    public function downloadSampleEstimates()
+    {
+
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="sample_import_file.csv";');
+        header('Content-Transfer-Encoding: binary');
+
+        echo '"Otros Ingresos #","Cliente","Fecha de Creacion","Importe","Importe con impuesto","Impuesto total","IVA 16.00%","Descuento","Ajuste","Zona del Bar","Tipo de Pago","Orden"';
+
+        echo "\n";
+
+        echo '"Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data"';
+
+        echo "\n";
+        exit;
+    }
+
+    /**
+     * Download sample .csv file
+     * @return mixed
+     */
+    public function downloadSampleProposals()
+    {
+
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="sample_import_file.csv";');
+        header('Content-Transfer-Encoding: binary');
+
+        echo '"Otros Ingresos #","Cliente","Fecha de Creacion","Importe","Importe con impuesto","Impuesto total","IVA 16.00%","Descuento","Ajuste","Zona del Bar","Tipo de Pago","Orden"';
+
+        echo "\n";
+
+        echo '"Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data","Sample Data"';
+
+        echo "\n";
+        exit;
+    }
+
+    /**
+     * Download sample .csv file
+     * @return mixed
+     */
     public function downloadSample()
     {
         $totalSampleFields = 0;

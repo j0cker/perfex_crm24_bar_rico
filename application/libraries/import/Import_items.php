@@ -5,8 +5,10 @@ require_once(APPPATH . 'libraries/import/App_import.php');
 
 class Import_items extends App_import
 {
+    //campos a ignorar
     protected $notImportableFields = ['id'];
 
+    //campos requeridos
     protected $requiredFields = ['description', 'rate'];
 
     public function __construct()
@@ -24,6 +26,7 @@ class Import_items extends App_import
         $totalDatabaseFields = count($databaseFields);
 
         foreach ($this->getRows() as $rowNumber => $row) {
+
             $insert = [];
             for ($i = 0; $i < $totalDatabaseFields; $i++) {
                 $row[$i] = $this->checkNullValueAddedByUser($row[$i]);
